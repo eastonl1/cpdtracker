@@ -1,4 +1,7 @@
 import { supabase } from "./supabase"
+import type { Database } from "./supabase"
+
+type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 
 export const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
   const { data, error } = await supabase.auth.signUp({
@@ -67,8 +70,12 @@ export const getCurrentUser = async () => {
   return user
 }
 
-export const getProfile = async (userId: string) => {
-  const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).single()
+export const getProfile = async (userId: string): Promise<Profile | null> => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single<Profile>() 
 
   if (error) throw error
   return data
