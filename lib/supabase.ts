@@ -137,7 +137,15 @@ function createStub(): SupabaseClient {
 
 // -------------------------------------------------------------------------
 export const supabase: SupabaseClient =
-  supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : createStub()
+  supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          storage: localStorage,
+        },
+      })
+    : createStub()
 
 // Helpful export so callers can check if Supabase is live
 export const hasSupabaseEnv = Boolean(supabaseUrl && supabaseAnonKey)
