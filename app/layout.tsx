@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import SupabaseSessionProvider from './supabase-session-provider'; // adjust path if not in /app
+import SupabaseSessionProvider from './supabase-session-provider';
 
 export const dynamic = "force-dynamic";
 
@@ -18,11 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="max-w-screen-lg mx-auto px-4">
-          <SupabaseSessionProvider>
-            {children}
-          </SupabaseSessionProvider>
-        </div>
+        <SupabaseSessionProvider>
+          {children}
+        </SupabaseSessionProvider>
       </body>
     </html>
   );

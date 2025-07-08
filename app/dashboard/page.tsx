@@ -104,9 +104,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-
-      {/* Remove container here, since it's now in RootLayout */}
-      <div className="py-3 space-y-2">
+      <div className="container py-3 space-y-2">
         {/* Header with Year Selection */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
