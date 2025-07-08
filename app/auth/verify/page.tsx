@@ -1,19 +1,21 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader2, CheckCircle } from "lucide-react";
 
 export default function VerifyEmailPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [status, setStatus] = useState<"verifying" | "success" | "error">("verifying");
 
   useEffect(() => {
-    const token = searchParams.get("access_token"); // ✅ correct param
-    const type = searchParams.get("type"); // optional
+    // ✅ Supabase sends the token in the hash fragment
+    const hash = window.location.hash;
+    const params = new URLSearchParams(hash.slice(1)); // remove '#' and parse
 
-    if (!token) {
+    const accessToken = params.get("access_token");
+
+    if (!accessToken) {
       setStatus("error");
       return;
     }
@@ -24,7 +26,7 @@ export default function VerifyEmailPage() {
     setTimeout(() => {
       router.push("/auth");
     }, 1500);
-  }, [searchParams, router]);
+  }, [router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">
