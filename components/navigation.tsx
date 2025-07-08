@@ -30,11 +30,14 @@ export function Navigation() {
   }
 
   const userName =
-    profile?.first_name && profile?.last_name ? `${profile.first_name} ${profile.last_name}` : profile?.email || "User"
+    profile?.first_name && profile?.last_name
+      ? `${profile.first_name} ${profile.last_name}`
+      : profile?.email || "User"
 
   return (
     <nav className="border-b bg-white">
-      <div className="container py-3 space-y-2">
+      {/* Main container - matches dashboard width */}
+      <div className="max-w-screen-lg mx-auto px-4 py-3 space-y-2">
         {/* Top nav row: logo, desktop nav, sign out */}
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -56,7 +59,8 @@ export function Navigation() {
                   asChild
                   className={cn(
                     "flex items-center space-x-2",
-                    pathname === item.href && "bg-blue-600 text-white hover:bg-blue-700",
+                    pathname === item.href &&
+                      "bg-blue-600 text-white hover:bg-blue-700"
                   )}
                 >
                   <Link href={item.href}>
@@ -93,7 +97,8 @@ export function Navigation() {
                   asChild
                   className={cn(
                     "flex items-center space-x-1 whitespace-nowrap",
-                    pathname === item.href && "bg-blue-600 text-white hover:bg-blue-700",
+                    pathname === item.href &&
+                      "bg-blue-600 text-white hover:bg-blue-700"
                   )}
                 >
                   <Link href={item.href}>
