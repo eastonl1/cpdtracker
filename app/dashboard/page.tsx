@@ -106,7 +106,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50">
       <Navigation />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="max-w-screen-lg mx-auto px-4 py-8">
         {/* Header with Year Selection */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
