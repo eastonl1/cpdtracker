@@ -1,22 +1,29 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader2, CheckCircle } from "lucide-react";
 
 export default function VerifyEmailPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState<"verifying" | "success" | "error">("verifying");
 
   useEffect(() => {
-    // Assume success, Supabase handles token in background
+    const token = searchParams.get("token");
+    const type = searchParams.get("type"); // optional
+
+    if (!token) {
+      setStatus("error");
+      return;
+    }
+
     setStatus("success");
 
-    const timeout = setTimeout(() => {
-      router.push("/dashboard");
+    // ✅ Redirect to login instead of dashboard
+    setTimeout(() => {
+      router.push("/auth");
     }, 1500);
-
-    return () => clearTimeout(timeout);
-  }, [router]);
+  }, [searchParams, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -29,12 +36,12 @@ export default function VerifyEmailPage() {
       {status === "success" && (
         <div className="flex flex-col items-center">
           <CheckCircle className="w-8 h-8 text-green-500 mb-4" />
-          <p>Email confirmed! Redirecting you to your dashboard...</p>
+          <p>Email confirmed! Redirecting you to the login page...</p>
         </div>
       )}
       {status === "error" && (
         <div className="flex flex-col items-center">
-          <p className="text-red-600">Something went wrong. Please try again later.</p>
+          <p className="text-red-600">Invalid or missing token.</p>
         </div>
       )}
     </div>
