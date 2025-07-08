@@ -33,77 +33,75 @@ export function Navigation() {
     profile?.first_name && profile?.last_name ? `${profile.first_name} ${profile.last_name}` : profile?.email || "User"
 
   return (
-    <nav className="border-b bg-white">
-      <div className="max-w-screen-lg mx-auto px-4 py-3 space-y-2">
-        {/* Top nav row: logo, desktop nav, sign out */}
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/dashboard" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">CPD</span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">CPDTracker</span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navigation.map((item) => {
-              const Icon = item.icon
-              return (
-                <Button
-                  key={item.name}
-                  variant={pathname === item.href ? "default" : "ghost"}
-                  asChild
-                  className={cn(
-                    "flex items-center space-x-2",
-                    pathname === item.href && "bg-blue-600 text-white hover:bg-blue-700",
-                  )}
-                >
-                  <Link href={item.href}>
-                    <Icon className="w-4 h-4" />
-                    <span>{item.name}</span>
-                  </Link>
-                </Button>
-              )
-            })}
+    <nav className="border-b bg-white py-3 space-y-2">
+      {/* Top nav row: logo, desktop nav, sign out */}
+      <div className="flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/dashboard" className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm">CPD</span>
           </div>
+          <span className="text-xl font-bold text-gray-900">CPDTracker</span>
+        </Link>
 
-          {/* User Menu */}
-          <div className="flex items-center space-x-4">
-            <span className="hidden sm:block text-sm text-gray-600">
-              Welcome, {userName.split(" ")[0] || userName.split("@")[0]}
-            </span>
-            <Button variant="ghost" size="sm" onClick={handleSignOut}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
-          </div>
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-1">
+          {navigation.map((item) => {
+            const Icon = item.icon
+            return (
+              <Button
+                key={item.name}
+                variant={pathname === item.href ? "default" : "ghost"}
+                asChild
+                className={cn(
+                  "flex items-center space-x-2",
+                  pathname === item.href && "bg-blue-600 text-white hover:bg-blue-700",
+                )}
+              >
+                <Link href={item.href}>
+                  <Icon className="w-4 h-4" />
+                  <span>{item.name}</span>
+                </Link>
+              </Button>
+            )
+          })}
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden">
-          <div className="flex space-x-1 overflow-x-auto">
-            {navigation.map((item) => {
-              const Icon = item.icon
-              return (
-                <Button
-                  key={item.name}
-                  variant={pathname === item.href ? "default" : "ghost"}
-                  size="sm"
-                  asChild
-                  className={cn(
-                    "flex items-center space-x-1 whitespace-nowrap",
-                    pathname === item.href && "bg-blue-600 text-white hover:bg-blue-700",
-                  )}
-                >
-                  <Link href={item.href}>
-                    <Icon className="w-4 h-4" />
-                    <span className="text-xs">{item.name}</span>
-                  </Link>
-                </Button>
-              )
-            })}
-          </div>
+        {/* User Menu */}
+        <div className="flex items-center space-x-4">
+          <span className="hidden sm:block text-sm text-gray-600">
+            Welcome, {userName.split(" ")[0] || userName.split("@")[0]}
+          </span>
+          <Button variant="ghost" size="sm" onClick={handleSignOut}>
+            <LogOut className="w-4 h-4 mr-2" />
+            Sign Out
+          </Button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      <div className="md:hidden">
+        <div className="flex space-x-1 overflow-x-auto">
+          {navigation.map((item) => {
+            const Icon = item.icon
+            return (
+              <Button
+                key={item.name}
+                variant={pathname === item.href ? "default" : "ghost"}
+                size="sm"
+                asChild
+                className={cn(
+                  "flex items-center space-x-1 whitespace-nowrap",
+                  pathname === item.href && "bg-blue-600 text-white hover:bg-blue-700",
+                )}
+              >
+                <Link href={item.href}>
+                  <Icon className="w-4 h-4" />
+                  <span className="text-xs">{item.name}</span>
+                </Link>
+              </Button>
+            )
+          })}
         </div>
       </div>
     </nav>

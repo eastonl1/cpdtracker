@@ -18,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SupabaseSessionProvider>
-          {children}
-        </SupabaseSessionProvider>
+        <div className="max-w-screen-lg mx-auto px-4">
+          <SupabaseSessionProvider>
+            {children}
+          </SupabaseSessionProvider>
+        </div>
       </body>
     </html>
   );

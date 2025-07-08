@@ -15,9 +15,7 @@ import { YearGoalManager } from "@/components/year-goal-manager"
 import { useAuth } from "@/hooks/useAuth"
 import { getYearlyCompliance, getAvailableYears } from "@/lib/compliance"
 import type { ComplianceData } from "@/lib/compliance"
-import { createClient } from "@supabase/supabase-js"
 import { supabase } from "@/lib/supabase"
-
 
 export default function Dashboard() {
   const { user, profile, loading: authLoading } = useAuth()
@@ -38,6 +36,7 @@ export default function Dashboard() {
     if (user && profile) {
       loadDashboardData()
     }
+    // eslint-disable-next-line
   }, [user, profile, authLoading, router, selectedYear])
 
   const loadDashboardData = async () => {
@@ -106,7 +105,8 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50">
       <Navigation />
 
-      <div className="max-w-screen-lg mx-auto px-4 py-8">
+      {/* Remove container here, since it's now in RootLayout */}
+      <div className="py-3 space-y-2">
         {/* Header with Year Selection */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
