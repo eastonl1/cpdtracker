@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader2, CheckCircle } from "lucide-react";
@@ -9,7 +10,7 @@ export default function VerifyEmailPage() {
   const [status, setStatus] = useState<"verifying" | "success" | "error">("verifying");
 
   useEffect(() => {
-    const token = searchParams.get("token");
+    const token = searchParams.get("access_token"); // ✅ correct param
     const type = searchParams.get("type"); // optional
 
     if (!token) {
