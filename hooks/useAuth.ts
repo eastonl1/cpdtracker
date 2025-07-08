@@ -15,6 +15,12 @@ export function useAuth() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Prevent loading state from flipping too early if session is undefined (hydration)
+    if (typeof session === "undefined") {
+      setLoading(true)
+      return
+    }
+
     const fetchProfile = async () => {
       if (user) {
         try {
@@ -41,7 +47,8 @@ export function useAuth() {
     }
 
     fetchProfile()
-  }, [user])
+    // Only re-run when user or session changes
+  }, [user, session])
 
   const refreshProfile = async () => {
     if (user) {
@@ -57,7 +64,7 @@ export function useAuth() {
   return {
     user,
     profile,
-    loading: !session || loading,
+    loading, // <-- FIXED: Only uses the real loading state now!
     refreshProfile,
     isAuthenticated: !!user,
   }
