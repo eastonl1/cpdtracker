@@ -34,7 +34,7 @@ export function Navigation() {
 
   return (
     <nav className="border-b bg-white">
-      <div className="container mx-auto px-4 py-3 space-y-2">
+      <div className="max-w-screen-lg mx-auto px-4 py-3 space-y-2">
         {/* Top nav row: logo, desktop nav, sign out */}
         <div className="flex items-center justify-between">
           {/* Logo */}
