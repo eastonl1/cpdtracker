@@ -32,14 +32,7 @@ export function ComplianceChart({ compliance }: ComplianceChartProps) {
     },
   ].filter((item) => item.value > 0)
 
-  const barData = [
-    {
-      name: "Progress",
-      completed: compliance.totalCountedHours,
-      remaining: Math.max(0, compliance.goal - compliance.totalCountedHours),
-      goal: compliance.goal,
-    },
-  ]
+  console.log("Pie data:", pieData)
 
   return (
     <div className="grid md:grid-cols-2 gap-6">
@@ -97,7 +90,7 @@ export function ComplianceChart({ compliance }: ComplianceChartProps) {
         </CardHeader>
         <CardContent>
           {pieData.length > 0 ? (
-            <div className="h-64">
+            <div className="w-full h-[350px] md:h-[400px] flex justify-center items-center">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -105,7 +98,7 @@ export function ComplianceChart({ compliance }: ComplianceChartProps) {
                     cx="50%"
                     cy="50%"
                     innerRadius={60}
-                    outerRadius={100}
+                    outerRadius={120}
                     paddingAngle={5}
                     dataKey="value"
                   >

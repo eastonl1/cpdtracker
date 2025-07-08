@@ -34,8 +34,9 @@ export function Navigation() {
 
   return (
     <nav className="border-b bg-white">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-4 py-3 space-y-2">
+        {/* Top nav row: logo, desktop nav, sign out */}
+        <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/dashboard" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -44,7 +45,7 @@ export function Navigation() {
             <span className="text-xl font-bold text-gray-900">CPDTracker</span>
           </Link>
 
-          {/* Navigation Links */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             {navigation.map((item) => {
               const Icon = item.icon
@@ -80,7 +81,7 @@ export function Navigation() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden pb-4">
+        <div className="md:hidden">
           <div className="flex space-x-1 overflow-x-auto">
             {navigation.map((item) => {
               const Icon = item.icon

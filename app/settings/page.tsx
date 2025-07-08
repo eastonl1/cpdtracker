@@ -22,7 +22,6 @@ export default function SettingsPage() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    peoNumber: "",
     emailNotifications: true,
   })
 
@@ -36,7 +35,6 @@ export default function SettingsPage() {
       setFormData({
         firstName: profile.first_name || "",
         lastName: profile.last_name || "",
-        peoNumber: profile.peo_number || "",
         emailNotifications: profile.email_notifications,
       })
     }
@@ -53,7 +51,6 @@ export default function SettingsPage() {
       await updateProfile(user.id, {
         first_name: formData.firstName || null,
         last_name: formData.lastName || null,
-        peo_number: formData.peoNumber || null,
         email_notifications: formData.emailNotifications,
       })
 
@@ -176,17 +173,6 @@ export default function SettingsPage() {
                       onChange={(e) => setFormData((prev) => ({ ...prev, lastName: e.target.value }))}
                     />
                   </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="peo-number">PEO License Number (Optional)</Label>
-                  <Input
-                    id="peo-number"
-                    placeholder="e.g., 100123456"
-                    value={formData.peoNumber}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, peoNumber: e.target.value }))}
-                  />
-                  <p className="text-xs text-gray-500">This helps us provide PEO-specific guidance</p>
                 </div>
               </CardContent>
             </Card>

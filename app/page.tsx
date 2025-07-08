@@ -63,7 +63,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Track Hours</h3>
               <p className="text-gray-600">
-                Easily log your CPD activities and track progress toward your annual 30-hour requirement.
+                Easily log your CPD activities and track progress toward your annual personalized CPD goal.
               </p>
             </CardContent>
           </Card>
