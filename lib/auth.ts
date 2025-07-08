@@ -3,7 +3,12 @@ import type { Database } from "./supabase"
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 
-export const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
+export const signUp = async (
+  email: string,
+  password: string,
+  firstName?: string,
+  lastName?: string
+) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -12,6 +17,12 @@ export const signUp = async (email: string, password: string, firstName?: string
         first_name: firstName,
         last_name: lastName,
       },
+      emailRedirectTo:
+        process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
+        ? "https://cpd-tracker.ca/auth/verify"
+        : "http://localhost:3000/auth/verify",
+
+
     },
   })
 
@@ -75,7 +86,7 @@ export const getProfile = async (userId: string): Promise<Profile | null> => {
     .from("profiles")
     .select("*")
     .eq("id", userId)
-    .single<Profile>() 
+    .single<Profile>()
 
   if (error) throw error
   return data
@@ -91,4 +102,20 @@ export const updateProfile = async (userId: string, updates: any) => {
 
   if (error) throw error
   return data
+}
+
+// ✅ Reusable createProfile function
+export const createProfile = async (user: { id: string; email: string | undefined }) => {
+  const { error } = await supabase.from("profiles").insert({
+    id: user.id,
+    email: user.email ?? "",
+    first_name: null,
+    last_name: null,
+    cpd_goal: 30,
+    email_notifications: true,
+  })
+
+  if (error) throw error
+
+  return getProfile(user.id)
 }

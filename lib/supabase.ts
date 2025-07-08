@@ -1,10 +1,15 @@
 import { createClient } from "@supabase/supabase-js"
 
-// Read env - may be undefined in preview.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export interface Database {
   public: {
@@ -115,29 +120,22 @@ export interface Database {
 
 type SupabaseClient = ReturnType<typeof createClient>
 
-// --- Helper: build a no-op stub that matches the Supabase API shape -------
 function createStub(): SupabaseClient {
   const handler = {
     get() {
-      // Any property access just returns a function that warns.
       return () => {
         console.warn(
-          "[Supabase] Environment variables are missing. " +
-            "Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY " +
-            "to enable Supabase features.",
+          "[Supabase] Environment variables are missing or this is SSR. Supabase features disabled."
         )
-        return Promise.reject(new Error("Supabase environment variables are not configured in this preview."))
+        return Promise.reject(new Error("Supabase environment unavailable."))
       }
     },
   }
-  // Cast is fine – we only use it when real client is absent
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return new Proxy({} as SupabaseClient, handler)
 }
 
-// -------------------------------------------------------------------------
 export const supabase: SupabaseClient =
-  supabaseUrl && supabaseAnonKey
+  typeof window !== "undefined" && supabaseUrl && supabaseAnonKey
     ? createClient(supabaseUrl, supabaseAnonKey, {
         auth: {
           persistSession: true,
@@ -147,5 +145,4 @@ export const supabase: SupabaseClient =
       })
     : createStub()
 
-// Helpful export so callers can check if Supabase is live
 export const hasSupabaseEnv = Boolean(supabaseUrl && supabaseAnonKey)

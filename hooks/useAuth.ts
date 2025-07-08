@@ -1,52 +1,36 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import type { User } from "@supabase/supabase-js"
-import { supabase } from "@/lib/supabase"
-import { getProfile } from "@/lib/auth"
+import { useSession } from "@supabase/auth-helpers-react"
+import { getProfile, createProfile } from "@/lib/auth"
 import type { Database } from "@/lib/supabase"
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null)
+  const session = useSession()
+  const user = session?.user ?? null
+
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get initial session
-    const getInitialSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-      setUser(session?.user ?? null)
-
-      if (session?.user) {
+    const fetchProfile = async () => {
+      if (user) {
         try {
-          const profileData = await getProfile(session.user.id)
+          let profileData = await getProfile(user.id)
+
+          // Create one if it doesn't exist
+          if (!profileData) {
+            profileData = await createProfile({
+              id: user.id,
+              email: user.email ?? "",
+            })
+          }
+
           setProfile(profileData)
-        } catch (error) {
-          console.error("Error fetching profile:", error)
-        }
-      }
-
-      setLoading(false)
-    }
-
-    getInitialSession()
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setUser(session?.user ?? null)
-
-      if (session?.user) {
-        try {
-          const profileData = await getProfile(session.user.id)
-          setProfile(profileData)
-        } catch (error) {
-          console.error("Error fetching profile:", error)
+        } catch (err) {
+          console.error("Failed to load or create profile:", err)
           setProfile(null)
         }
       } else {
@@ -54,18 +38,18 @@ export function useAuth() {
       }
 
       setLoading(false)
-    })
+    }
 
-    return () => subscription.unsubscribe()
-  }, [])
+    fetchProfile()
+  }, [user])
 
   const refreshProfile = async () => {
     if (user) {
       try {
         const profileData = await getProfile(user.id)
         setProfile(profileData)
-      } catch (error) {
-        console.error("Error refreshing profile:", error)
+      } catch (err) {
+        console.error("Error refreshing profile:", err)
       }
     }
   }
@@ -73,7 +57,7 @@ export function useAuth() {
   return {
     user,
     profile,
-    loading,
+    loading: !session || loading,
     refreshProfile,
     isAuthenticated: !!user,
   }

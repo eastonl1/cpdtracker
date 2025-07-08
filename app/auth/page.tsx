@@ -58,10 +58,24 @@ export default function AuthPage() {
     }
 
     try {
-      await signUp(email, password, firstName, lastName)
-      setSuccess("Account created! Please check your email to verify your account.")
+      const result = await signUp(email, password, firstName, lastName)
+
+      // Show the same message, even if the profile insert fails
+      setSuccess("Almost there! Check your email to confirm your account and log in.")
+
+      // Optionally: clear the form or disable it after success
+      // e.currentTarget.reset()
     } catch (err: any) {
-      setError(err.message || "Failed to create account")
+      // If it's an RLS/profile error, show the friendly message
+      if (
+        typeof err.message === "string" &&
+        err.message.toLowerCase().includes("row-level security")
+      ) {
+        setSuccess("Almost there! Check your email to confirm your account and log in.")
+        setError(null)
+      } else {
+        setError(err.message || "Failed to create account")
+      }
     } finally {
       setIsLoading(false)
     }
